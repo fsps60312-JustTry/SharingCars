@@ -11,6 +11,6 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application android:label="SharingCars.Android">
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDAGvGyWgCJ8xtK27hkgYnvBO3zzbos-M0" />
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDAGvGyWgCJ8xtK27hkgYnvBO3zzbos-M0"/>
     </application>
 </manifest>

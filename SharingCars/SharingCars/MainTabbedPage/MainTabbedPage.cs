@@ -27,8 +27,8 @@ namespace SharingCars.MainTabbedPage
         {
             if (AppData.AppData.userFacebookProfile == null)
             {
-                await DisplayAlert("", "Not implemented", "OK");
-                //await Navigation.PushModalAsync(new LoginPage.LoginPage());
+                //await DisplayAlert("", "Not implemented", "OK");
+                await Navigation.PushModalAsync(new LoginPage.LoginPage());
             }
         }
 
