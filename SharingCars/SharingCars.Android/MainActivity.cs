@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Gcm.Client;
+using System.IO;
 
 namespace SharingCars.Droid
 {
@@ -14,16 +15,10 @@ namespace SharingCars.Droid
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity CurrentActivity { get; private set; }
-        private void CreateAndShowDialog(string message, string title)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.SetMessage(message);
-            builder.SetTitle(title);
-            builder.Create().Show();
-        }
         protected override void OnCreate (Bundle bundle)
         {
             CurrentActivity = this;
+            RegisterForErrorReporting();
 
             TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar; 
@@ -32,7 +27,16 @@ namespace SharingCars.Droid
 
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 			LoadApplication (new SharingCars.App ());
-            Xamarin.FormsMaps.Init(this, bundle);
+            RegisterEverything(bundle);
+        }
+        private void RegisterEverything(Bundle bundle)
+        {
+            RegisterForErrorReporting();
+            RegisterForGoogleMap(bundle);
+            RegisterForNotificationReceiving();
+        }
+        private void RegisterForNotificationReceiving()
+        {
             try
             {
                 // Check to ensure everything's set up right
@@ -52,6 +56,90 @@ namespace SharingCars.Droid
                 CreateAndShowDialog(e.Message, "Error");
             }
         }
+        private void RegisterForGoogleMap(Bundle bundle)
+        {
+            Xamarin.FormsMaps.Init(this, bundle);
+        }
+        private void CreateAndShowDialog(string message, string title)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetMessage(message);
+            builder.SetTitle(title);
+            builder.Create().Show();
+        }
+        private void RegisterForErrorReporting()
+        {
+            AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e)
+            {
+                var msg = $"TaskScheduler.UnobservedTaskException\r\n{e}";
+                System.Diagnostics.Trace.WriteLine(msg);
+                App.Current.MainPage.DisplayAlert("AppDomain.CurrentDomain.UnhandledException", $"{e}", "OK");
+                LogUnhandledException(new Exception("AppDomain.CurrentDomain.UnhandledException", e.ExceptionObject as Exception));
+            };
+            System.Threading.Tasks.TaskScheduler.UnobservedTaskException += delegate (object sender, System.Threading.Tasks.UnobservedTaskExceptionEventArgs e)
+            {
+                var msg = $"TaskScheduler.UnobservedTaskException\r\n{e}";
+                System.Diagnostics.Trace.WriteLine(msg);
+                App.Current.MainPage.DisplayAlert("TaskScheduler.UnobservedTaskException", $"{e}", "OK");
+                LogUnhandledException(new Exception("TaskScheduler.UnobservedTaskException", e.Exception));
+            };
+            DisplayCrashReport();
+        }
+
+        #region Error handling
+
+        internal static void LogUnhandledException(Exception exception)
+        {
+            try
+            {
+                const string errorFileName = "Fatal.log";
+                var libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); // iOS: Environment.SpecialFolder.Resources
+                var errorFilePath = Path.Combine(libraryPath, errorFileName);
+                var errorMessage = String.Format("Time: {0}\r\nError: Unhandled Exception\r\n{1}",
+                DateTime.Now, exception.ToString());
+                File.WriteAllText(errorFilePath, errorMessage);
+
+                // Log to Android Device Logging.
+                Android.Util.Log.Error("Crash Report", errorMessage);
+            }
+            catch
+            {
+                // just suppress any error logging exceptions
+            }
+        }
+
+        /// <summary>
+        // If there is an unhandled exception, the exception information is diplayed 
+        // on screen the next time the app is started (only in debug configuration)
+        /// </summary>
+        //[Conditional("DEBUG")]
+        private void DisplayCrashReport()
+        {
+            const string errorFilename = "Fatal.log";
+            var libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var errorFilePath = Path.Combine(libraryPath, errorFilename);
+
+            if (!File.Exists(errorFilePath))
+            {
+                Toast.MakeText(this, "Hooray! No error since last launch!", ToastLength.Long).Show();
+                return;
+            }
+
+            var errorText = File.ReadAllText(errorFilePath);
+            new AlertDialog.Builder(this)
+            .SetPositiveButton("Clear", (sender, args) =>
+            {
+                File.Delete(errorFilePath);
+            })
+            .SetNegativeButton("Close", (sender, args) =>
+            {
+                // User pressed Close.
+            })
+            .SetMessage(errorText)
+            .SetTitle("Crash Report")
+            .Show();
+        }
+        #endregion
     }
 }
 
