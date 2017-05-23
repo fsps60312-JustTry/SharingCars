@@ -13,8 +13,8 @@ namespace SharingCars.AppData
         public enum DataType { FacebookId, CarInfo };
         //public static string tmp;
         public static string FacebookAppId { get { return "330515237367117"; } }
-        public static string StorageAccountKey { get { return "D01CYiIDETKq5s1CfnCEhuTymPqLT12h7V/wdFKr3fc+fY7DvhRejJsStn5+egQg+QYXZRMGENEQlWZ4IZU9yw=="; } }
-        public static string StorageAccountName { get { return "xfauth"; } }
+        public static string StorageAccountKey { get { return "GTH65N27gS8mOOTyQpl52kVzTW1m3/cG0Afi9HjjHhc27wuVHuKQ7eC7XpNa90UWJ7mh7Ilne1npFyHtNaiO/A=="; } }
+        public static string StorageAccountName { get { return "sharingcars"; } }
         public static string ModifiedDeviceId { get { return CrossDeviceInfo.Current.Id.ToLower(); } }
         public static FacebookProfile userFacebookProfile;
         public static List<CarInfo> cars = new List<CarInfo>();

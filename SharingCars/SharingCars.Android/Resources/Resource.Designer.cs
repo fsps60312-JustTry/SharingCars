@@ -26,6 +26,7 @@ namespace SharingCars.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Gcm.Client.Resource.String.library_name = global::SharingCars.Droid.Resource.String.library_name;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::SharingCars.Droid.Resource.Attribute.actionBarSize;
 		}
 		
@@ -2357,109 +2358,112 @@ namespace SharingCars.Droid
 			public const int ic_expand_00015 = 2130837672;
 			
 			// aapt resource value: 0x7f0200a9
-			public const int ic_media_pause = 2130837673;
+			public const int ic_launcher = 2130837673;
 			
 			// aapt resource value: 0x7f0200aa
-			public const int ic_media_play = 2130837674;
+			public const int ic_media_pause = 2130837674;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int ic_media_route_disabled_mono_dark = 2130837675;
+			public const int ic_media_play = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int ic_media_route_off_mono_dark = 2130837676;
+			public const int ic_media_route_disabled_mono_dark = 2130837676;
 			
 			// aapt resource value: 0x7f0200ad
-			public const int ic_media_route_on_0_mono_dark = 2130837677;
+			public const int ic_media_route_off_mono_dark = 2130837677;
 			
 			// aapt resource value: 0x7f0200ae
-			public const int ic_media_route_on_1_mono_dark = 2130837678;
+			public const int ic_media_route_on_0_mono_dark = 2130837678;
 			
 			// aapt resource value: 0x7f0200af
-			public const int ic_media_route_on_2_mono_dark = 2130837679;
+			public const int ic_media_route_on_1_mono_dark = 2130837679;
 			
 			// aapt resource value: 0x7f0200b0
-			public const int ic_media_route_on_mono_dark = 2130837680;
+			public const int ic_media_route_on_2_mono_dark = 2130837680;
 			
 			// aapt resource value: 0x7f0200b1
-			public const int ic_pause_dark = 2130837681;
+			public const int ic_media_route_on_mono_dark = 2130837681;
 			
 			// aapt resource value: 0x7f0200b2
-			public const int ic_pause_light = 2130837682;
+			public const int ic_pause_dark = 2130837682;
 			
 			// aapt resource value: 0x7f0200b3
-			public const int ic_play_dark = 2130837683;
+			public const int ic_pause_light = 2130837683;
 			
 			// aapt resource value: 0x7f0200b4
-			public const int ic_play_light = 2130837684;
+			public const int ic_play_dark = 2130837684;
 			
 			// aapt resource value: 0x7f0200b5
-			public const int ic_speaker_dark = 2130837685;
+			public const int ic_play_light = 2130837685;
 			
 			// aapt resource value: 0x7f0200b6
-			public const int ic_speaker_group_dark = 2130837686;
+			public const int ic_speaker_dark = 2130837686;
 			
 			// aapt resource value: 0x7f0200b7
-			public const int ic_speaker_group_light = 2130837687;
+			public const int ic_speaker_group_dark = 2130837687;
 			
 			// aapt resource value: 0x7f0200b8
-			public const int ic_speaker_light = 2130837688;
+			public const int ic_speaker_group_light = 2130837688;
 			
 			// aapt resource value: 0x7f0200b9
-			public const int ic_tv_dark = 2130837689;
+			public const int ic_speaker_light = 2130837689;
 			
 			// aapt resource value: 0x7f0200ba
-			public const int ic_tv_light = 2130837690;
+			public const int ic_tv_dark = 2130837690;
 			
 			// aapt resource value: 0x7f0200bb
-			public const int Icon = 2130837691;
+			public const int ic_tv_light = 2130837691;
 			
 			// aapt resource value: 0x7f0200bc
-			public const int mr_dialog_material_background_dark = 2130837692;
+			public const int Icon = 2130837692;
 			
 			// aapt resource value: 0x7f0200bd
-			public const int mr_dialog_material_background_light = 2130837693;
+			public const int mr_dialog_material_background_dark = 2130837693;
 			
 			// aapt resource value: 0x7f0200be
-			public const int mr_ic_audiotrack_light = 2130837694;
+			public const int mr_dialog_material_background_light = 2130837694;
 			
 			// aapt resource value: 0x7f0200bf
-			public const int mr_ic_cast_dark = 2130837695;
+			public const int mr_ic_audiotrack_light = 2130837695;
 			
 			// aapt resource value: 0x7f0200c0
-			public const int mr_ic_cast_light = 2130837696;
+			public const int mr_ic_cast_dark = 2130837696;
 			
 			// aapt resource value: 0x7f0200c1
-			public const int mr_ic_close_dark = 2130837697;
+			public const int mr_ic_cast_light = 2130837697;
 			
 			// aapt resource value: 0x7f0200c2
-			public const int mr_ic_close_light = 2130837698;
+			public const int mr_ic_close_dark = 2130837698;
 			
 			// aapt resource value: 0x7f0200c3
-			public const int mr_ic_media_route_connecting_mono_dark = 2130837699;
+			public const int mr_ic_close_light = 2130837699;
 			
 			// aapt resource value: 0x7f0200c4
-			public const int mr_ic_media_route_connecting_mono_light = 2130837700;
+			public const int mr_ic_media_route_connecting_mono_dark = 2130837700;
 			
 			// aapt resource value: 0x7f0200c5
-			public const int mr_ic_media_route_mono_dark = 2130837701;
+			public const int mr_ic_media_route_connecting_mono_light = 2130837701;
 			
 			// aapt resource value: 0x7f0200c6
-			public const int mr_ic_media_route_mono_light = 2130837702;
+			public const int mr_ic_media_route_mono_dark = 2130837702;
 			
 			// aapt resource value: 0x7f0200c7
-			public const int mr_ic_pause_dark = 2130837703;
+			public const int mr_ic_media_route_mono_light = 2130837703;
 			
 			// aapt resource value: 0x7f0200c8
-			public const int mr_ic_pause_light = 2130837704;
+			public const int mr_ic_pause_dark = 2130837704;
 			
 			// aapt resource value: 0x7f0200c9
-			public const int mr_ic_play_dark = 2130837705;
+			public const int mr_ic_pause_light = 2130837705;
 			
 			// aapt resource value: 0x7f0200ca
-			public const int mr_ic_play_light = 2130837706;
+			public const int mr_ic_play_dark = 2130837706;
 			
 			// aapt resource value: 0x7f0200cb
-			public const int notification_template_icon_bg = 2130837707;
+			public const int mr_ic_play_light = 2130837707;
+			
+			// aapt resource value: 0x7f0200cc
+			public const int notification_template_icon_bg = 2130837708;
 			
 			static Drawable()
 			{
@@ -3288,6 +3292,9 @@ namespace SharingCars.Droid
 			// aapt resource value: 0x7f060040
 			public const int abc_toolbar_collapse_description = 2131099712;
 			
+			// aapt resource value: 0x7f060045
+			public const int app_name = 2131099717;
+			
 			// aapt resource value: 0x7f060042
 			public const int appbar_scrolling_view_behavior = 2131099714;
 			
@@ -3389,6 +3396,9 @@ namespace SharingCars.Droid
 			
 			// aapt resource value: 0x7f06001e
 			public const int common_signin_button_text_long = 2131099678;
+			
+			// aapt resource value: 0x7f060046
+			public const int library_name = 2131099718;
 			
 			// aapt resource value: 0x7f06001f
 			public const int mr_button_content_description = 2131099679;
