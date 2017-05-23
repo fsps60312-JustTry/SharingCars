@@ -13,7 +13,7 @@ namespace SharingCars
 		{
 			InitializeComponent();
 
-			MainPage = new SharingCars.MainPage();
+			MainPage = new SharingCars.MainTabbedPage.MainTabbedPage();
 		}
 
 		protected override void OnStart ()

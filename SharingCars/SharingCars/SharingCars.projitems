@@ -12,9 +12,21 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\AppData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\CarInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\FacebookProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CarPage\CarPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CarPage\EditCarPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginPage\LoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\MainTabbedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\Utils\PhotoManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ExplorePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ProfilePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserInfo\ReportUserPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserInfo\UserInfoPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml">
