@@ -18,7 +18,6 @@ namespace SharingCars.Droid
         protected override void OnCreate (Bundle bundle)
         {
             CurrentActivity = this;
-            RegisterForErrorReporting();
 
             TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar; 
@@ -28,6 +27,14 @@ namespace SharingCars.Droid
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 			LoadApplication (new SharingCars.App ());
             RegisterEverything(bundle);
+        }
+        public void ToastNotify(string msg)
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                //new AlertDialog.Builder(this).SetMessage(msg).Show();
+                Toast.MakeText(this, msg, ToastLength.Long).Show();
+            });
         }
         private void RegisterEverything(Bundle bundle)
         {

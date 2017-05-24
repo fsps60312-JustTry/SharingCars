@@ -35,7 +35,7 @@ namespace SharingCars.MainTabbedPage.TabPages
             {
                 case "Android":
                     {
-                        await Application.Current.MainPage.DisplayAlert("", $"Working on pushing notification on {Device.RuntimePlatform}", "OK");
+                        Droid.NotificationSender.SendNotification("hi");
                     }
                     break;
                 default:
