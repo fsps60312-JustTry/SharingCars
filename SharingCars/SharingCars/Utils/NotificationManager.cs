@@ -10,9 +10,10 @@ namespace SharingCars
     class NotificationManager
     {
         public enum Flags {Title,Message,Type,SenderId };
-        public enum SendType { CarRequest, CarOwnerPriceRequest };
+        public enum SendType { CarRequest, CarOwnerPriceRequest,OfficialNotification };
         public enum CarRequestFlag { RequestLatitude, RequestLongitude, RequestRadius, DeviceLatitude, DeviceLongitude };
         public enum CarOwnerPriceRequestFlag { Price};
+        public enum OfficialNotificationFlag { };
         public static async Task HandleIntent(Dictionary<string, string> intent)
         {
             foreach (var f in Enum.GetValues(typeof(Flags))) Trace.Assert(intent.ContainsKey($"{f}"));
@@ -29,6 +30,11 @@ namespace SharingCars
             {
                 foreach (var f in Enum.GetValues(typeof(CarOwnerPriceRequestFlag))) Trace.Assert(intent.ContainsKey($"{f}"));
                 await Application.Current.MainPage.DisplayAlert("", $"{intent[Flags.SenderId.ToString()]} offer a price of {intent[CarOwnerPriceRequestFlag.Price.ToString()]}", "OK");
+            }
+            else if(type==$"{SendType.OfficialNotification}")
+            {
+                foreach (var f in Enum.GetValues(typeof(OfficialNotificationFlag))) Trace.Assert(intent.ContainsKey($"{f}"));
+                await Application.Current.MainPage.DisplayAlert(intent[$"{Flags.Title}"], intent[$"{Flags.Message}"], "OK");
             }
             else
             {
@@ -61,6 +67,10 @@ namespace SharingCars
                         { $"{CarRequestFlag.DeviceLatitude}", $"{AppData.AppData.deviceLocation.Latitude}" },
                         { $"{CarRequestFlag.DeviceLongitude}", $"{AppData.AppData.deviceLocation.Longitude}" }
                     }, null);
+            }
+            public static async Task OfficialNotification(string title,string message,bool bePublic)
+            {
+                await SendNotification(title, message, $"{SendType.OfficialNotification}", null, bePublic ? null : AppData.AppDataConstants.DeviceId);
             }
             private static async Task SendNotification(string title, string msg, string type, Dictionary<string, string> intent = null, string tag = null)
             {

@@ -83,14 +83,18 @@ namespace SharingCars.Droid
                 var msg = $"TaskScheduler.UnobservedTaskException\r\n{e}";
                 System.Diagnostics.Trace.WriteLine(msg);
                 App.Current.MainPage.DisplayAlert("AppDomain.CurrentDomain.UnhandledException", $"{e}", "OK");
-                LogUnhandledException(new Exception("AppDomain.CurrentDomain.UnhandledException", e.ExceptionObject as Exception));
+                var error = new Exception("AppDomain.CurrentDomain.UnhandledException", e.ExceptionObject as Exception);
+                LogUnhandledException(error);
+                ErrorReporter.ReportError(error);
             };
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += delegate (object sender, System.Threading.Tasks.UnobservedTaskExceptionEventArgs e)
             {
                 var msg = $"TaskScheduler.UnobservedTaskException\r\n{e}";
                 System.Diagnostics.Trace.WriteLine(msg);
                 App.Current.MainPage.DisplayAlert("TaskScheduler.UnobservedTaskException", $"{e}", "OK");
-                LogUnhandledException(new Exception("TaskScheduler.UnobservedTaskException", e.Exception));
+                var error = new Exception("TaskScheduler.UnobservedTaskException", e.Exception);
+                LogUnhandledException(error);
+                ErrorReporter.ReportError(error);
             };
             DisplayCrashReport();
         }
@@ -139,7 +143,7 @@ namespace SharingCars.Droid
         // on screen the next time the app is started (only in debug configuration)
         /// </summary>
         //[Conditional("DEBUG")]
-        private void DisplayCrashReport()
+        private async void DisplayCrashReport()
         {
             const string errorFilename = "Fatal.log";
             var libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
@@ -152,6 +156,7 @@ namespace SharingCars.Droid
             }
 
             var errorText = File.ReadAllText(errorFilePath);
+            await ErrorReporter.ReportErrorAsync(errorText);
             new AlertDialog.Builder(this)
             .SetPositiveButton("Clear", (sender, args) =>
             {

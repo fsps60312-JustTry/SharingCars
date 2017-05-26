@@ -16,9 +16,8 @@ namespace SharingCars.AppData
     }
     class CarInfo : InfoPrototype<CarInfoData>
     {
-        public new static async Task<CarInfo> New(CarInfoData data)
-        {
-            return new CarInfo { Id = await InfoPrototype<CarInfoData>.New(data) };
-        }
+        static string Name = "car-info";
+        public async Task<CarInfoData> GetData() { return await GetData(Name); }
+        public static async Task<CarInfo> New(CarInfoData data) { return new CarInfo { Id = await InfoPrototype<CarInfoData>.New(Name, data) }; }
     }
 }

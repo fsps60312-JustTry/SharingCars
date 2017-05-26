@@ -31,7 +31,9 @@ namespace SharingCars.UserInfo
                 };
                 btn.Clicked += async delegate
                   {
-
+                      btn.IsEnabled = false;
+                      await Navigation.PushAsync(new Developer.DeveloperPage());
+                      btn.IsEnabled = true;
                   };
                 SLmain.Children.Add(btn);
             }
@@ -41,6 +43,24 @@ namespace SharingCars.UserInfo
             this.ToolbarItems.Add(new ToolbarItem("Edit", null, async () =>
             {
                 await DisplayAlert("Edit", "", "OK");
+                if(await DisplayAlert("","Generate error?","Yes","No"))
+                {
+                    if(await DisplayAlert("","Is the error catched?","Yes","No"))
+                    {
+                        try
+                        {
+                            throw new Exception();
+                        }
+                        catch(Exception error)
+                        {
+                            await new SharingCars.Utils.Alerts.ErrorAlert(error).Show();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
             }));
             BTNmyCars.Clicked += async delegate (object sender, EventArgs e)
             {

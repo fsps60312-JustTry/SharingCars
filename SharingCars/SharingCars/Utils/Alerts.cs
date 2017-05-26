@@ -6,7 +6,10 @@ namespace SharingCars.Utils.Alerts
 {
     class ErrorAlert : AlertInfo
     {
-        public ErrorAlert(Exception error) : base("Error", error.ToString(), "OK") { }
+        public ErrorAlert(Exception error) : base("Error", error.ToString(), "OK")
+        {
+            ErrorReporter.ReportError(error);
+        }
     }
     class DebugAlert : AlertInfo
     {

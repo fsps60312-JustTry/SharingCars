@@ -62,6 +62,30 @@ namespace SharingCars.LoginPage
             InitializeViews();
             RegisterEvents();
         }
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if(await DisplayAlert("", "Quit?", "OK", "Cancel"))
+                {
+                    switch(Device.RuntimePlatform)
+                    {
+                        case Device.Android:
+                            {
+                                var activity = (Android.App.Activity)Forms.Context;
+                                activity.FinishAffinity();
+                                break;
+                            }
+                        default:
+                            {
+                                await DisplayAlert("", $"Can't close App on {Device.RuntimePlatform}", "OK");
+                                break;
+                            }
+                    }
+                }
+            });
+            return true;
+        }
         private async Task<bool> LogInToFacebook()
         {
             BTNfacebookLogIn.IsEnabled = false;
@@ -103,6 +127,7 @@ namespace SharingCars.LoginPage
         }
         private void InitializeViews()
         {
+            NavigationPage.SetHasBackButton(this, false);
             {
                 GDmain = new Grid();
                 GDmain.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });

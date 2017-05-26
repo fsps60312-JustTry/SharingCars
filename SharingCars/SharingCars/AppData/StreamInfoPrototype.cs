@@ -4,7 +4,7 @@ using System.IO;
 
 namespace SharingCars.AppData
 {
-    class StreamInfoPrototype
+    abstract class StreamInfoPrototype
     {
         public ulong Id = 0;
         protected async Task<Stream> GetData(string directoryName)

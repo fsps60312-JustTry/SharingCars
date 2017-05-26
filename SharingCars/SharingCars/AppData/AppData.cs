@@ -37,13 +37,13 @@ namespace SharingCars.AppData
                     return;
             }
             Trace.Assert(s != null);
-            var blockBlob = await Methods.GetBlockBlobAsync("app-data", dataType.ToString().ToLower());
+            var blockBlob = await GetBlockBlobForAppDataAsync(dataType);
             //container.GetBlockBlobReference(dataType.ToString().ToLower());
             await blockBlob.UploadTextAsync(s);
         }
         public static async Task DownloadAsync(DataType dataType)
         {
-            var blockBlob = await Methods.GetBlockBlobAsync("app-data",dataType.ToString().ToLower());
+            var blockBlob = await GetBlockBlobForAppDataAsync(dataType);
             if (!await blockBlob.ExistsAsync())
             {
                 await App.Current.MainPage.DisplayAlert("", $"You haven't save any \"{dataType}\" data on cloud!", "OK");
@@ -67,6 +67,10 @@ namespace SharingCars.AppData
                     await App.Current.MainPage.DisplayAlert("Error", msg, "OK");
                     return;
             }
+        }
+        private static async Task<CloudBlockBlob> GetBlockBlobForAppDataAsync(DataType dataType)
+        {
+            return (await Methods.GetBlobDirectoryAsync("users")).GetDirectoryReference(Methods.StringMapToLowerCase(AppDataConstants.DeviceId)).GetBlockBlobReference(Methods.StringMapToLowerCase(dataType.ToString()));
         }
     }
     static class Methods
@@ -128,11 +132,11 @@ namespace SharingCars.AppData
         {
             var container = Methods.container;
             await container.CreateIfNotExistsAsync();
-            return container.GetDirectoryReference("version-0").GetDirectoryReference(StringMapToLowerCase(AppDataConstants.DeviceId)).GetDirectoryReference(directoryName);
+            return container.GetDirectoryReference("version-0").GetDirectoryReference(directoryName);
         }
         public static async Task<CloudBlockBlob> GetBlockBlobAsync(string directoryName,string name)
         {
-            return (await GetBlobDirectoryAsync(directoryName)).GetBlockBlobReference(name);
+            return (await GetBlobDirectoryAsync("open-data")).GetDirectoryReference(directoryName).GetBlockBlobReference(name);
         }
     }
     static class AppDataConstants

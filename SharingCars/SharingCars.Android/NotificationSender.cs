@@ -181,10 +181,10 @@ namespace SharingCars.Droid
 
                         // Send notification message
                         if (tag != null) urlConnection.SetRequestProperty("ServiceBusNotification-Tags", tag);
-
-                        urlConnection.SetFixedLengthStreamingMode(json.Length());
+                        var jsonBytes = json.GetBytes();
+                        urlConnection.SetFixedLengthStreamingMode(jsonBytes.Length);
                         OutputStream bodyStream = new BufferedOutputStream(urlConnection.OutputStream/*.GetOutputStream()*/);
-                        bodyStream.Write(json.GetBytes());
+                        bodyStream.Write(jsonBytes);
                         bodyStream.Close();
 
                         //MainActivity.CurrentActivity.ToastNotify(urlConnection.ToString());

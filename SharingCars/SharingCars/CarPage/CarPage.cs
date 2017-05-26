@@ -59,7 +59,7 @@ namespace SharingCars.CarPage
             TIupdate.Clicked += async delegate
             {
                 await DownloadDataAsync();
-                UpdateViews();
+                await UpdateViews();
             };
         }
         private void InitializeViews()

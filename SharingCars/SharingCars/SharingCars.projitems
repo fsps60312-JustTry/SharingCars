@@ -22,18 +22,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\CarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\EditCarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommunicationPage\CarOwnerPriceRequestPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Developer\DeveloperPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Developer\ErrorListPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Developer\PushNotificationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ActionSheets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Alerts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ErrorReporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Developer\ErrorReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginPage\LoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\MainTabbedPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AppData\Utils\PhotoManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ExplorePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ProfilePage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NotificationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\NotificationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInfo\ReportUserPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInfo\UserInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Numbers.cs" />
