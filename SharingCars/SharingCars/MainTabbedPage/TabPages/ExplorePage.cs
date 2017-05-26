@@ -3,6 +3,7 @@ using System.Text;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
+using SharingCars.Utils.Alerts;
 
 namespace SharingCars.MainTabbedPage.TabPages
 {
@@ -50,24 +51,30 @@ namespace SharingCars.MainTabbedPage.TabPages
                   AIhere.IsVisible = AIhere.IsRunning = true;
                   try
                   {
-                      await AppData.AppData.deviceLocation.Update();
-                      SetCurrentPosition(new Position(AppData.AppData.deviceLocation.Latitude, AppData.AppData.deviceLocation.Longitude));
-                      await AppData.AppData.Upload(AppData.AppData.DataType.DeviceLocation);
+                      if (await AppData.AppData.deviceLocation.Update())
+                      {
+                          SetCurrentPosition(new Position(AppData.AppData.deviceLocation.Latitude, AppData.AppData.deviceLocation.Longitude));
+                          await AppData.AppData.UploadAsync(AppData.AppData.DataType.DeviceLocation);
+                      }
+                      else
+                      {
+                          if (await Application.Current.MainPage.DisplayAlert("Can't get your location", $"Choose \"OK\" to use previous location", "OK", "Cancel"))
+                          {
+                              await AppData.AppData.DownloadAsync(AppData.AppData.DataType.DeviceLocation);
+                              if (!AppData.AppData.deviceLocation.IsEnabled)
+                              {
+                                  await Application.Current.MainPage.DisplayAlert("", "Previous location doesn't exist!", "OK");
+                              }
+                              else
+                              {
+                                  SetCurrentPosition(new Position(AppData.AppData.deviceLocation.Latitude, AppData.AppData.deviceLocation.Longitude));
+                              }
+                          }
+                      }
                   }
                   catch(Exception error)
                   {
-                      if(await Application.Current.MainPage.DisplayAlert("Can't get your location", $"Choose \"OK\" to use previous location\r\nError:\r\n{error}", "OK","Cancel"))
-                      {
-                          await AppData.AppData.Download(AppData.AppData.DataType.DeviceLocation);
-                          if(!AppData.AppData.deviceLocation.IsEnabled)
-                          {
-                              await Application.Current.MainPage.DisplayAlert("", "Previous location doesn't exist!", "OK");
-                          }
-                          else
-                          {
-                              SetCurrentPosition(new Position(AppData.AppData.deviceLocation.Latitude, AppData.AppData.deviceLocation.Longitude));
-                          }
-                      }
+                      await new ErrorAlert(error).Show();
                   }
                   AIhere.IsVisible = AIhere.IsRunning = false;
                   BTNhere.IsEnabled = true;

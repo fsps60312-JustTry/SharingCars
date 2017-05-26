@@ -21,7 +21,7 @@ namespace SharingCars.CarPage
         TableView TVmain;
         EntryCell ECname, ECage;
         ToolbarItem TIdone;
-        ulong carPhotoId;
+        AppData.PhotoInfo carPhoto;
         int carIndex;
         private async Task<bool> AddCarAndExit()
         {
@@ -30,13 +30,13 @@ namespace SharingCars.CarPage
                 await DisplayAlert("", $"欄位\"{ECage.Label}\"的格式不正確", "OK");
                 return false;
             }
-            var carInfo = new AppData.CarInfo
+            var carInfo = await AppData.CarInfo.New(new AppData.CarInfoData
             {
-                pictureId = carPhotoId,
+                photo = carPhoto,
                 name = ECname.Text,
-                type = AppData.CarInfo.CarType.Car,
+                type = AppData.CarInfoData.CarType.Car,
                 age = age
-            };
+            });
             if (carIndex == -1)// add
             {
                 AppData.AppData.cars.Add(carInfo);
@@ -46,7 +46,7 @@ namespace SharingCars.CarPage
                 AppData.AppData.cars.RemoveAt(carIndex);
                 AppData.AppData.cars.Insert(carIndex, carInfo);
             }
-            await AppData.AppData.Upload(AppData.AppData.DataType.CarInfo);
+            await AppData.AppData.UploadAsync(AppData.AppData.DataType.CarInfo);
             return true;
         }
         public EditCarPage(int carIndex = -1)
@@ -68,7 +68,7 @@ namespace SharingCars.CarPage
             {
                 IMGcar.IsVisible = false;
                 AImain.IsRunning = AImain.IsVisible = true;
-                carPhotoId = await PhotoManager.UploadPhotoAsync(file.GetStream());
+                carPhoto = await AppData.PhotoInfo.New(file.GetStream());
                 await UpdateCarPhotoAsync();
                 AImain.IsRunning = AImain.IsVisible = false;
                 IMGcar.IsVisible = true;
@@ -78,15 +78,15 @@ namespace SharingCars.CarPage
         private async Task LoadDataAsync()
         {
             if (carIndex == -1) return;
-            var carInfo = AppData.AppData.cars[carIndex];
-            carPhotoId = carInfo.pictureId;
+            var carInfo = await AppData.AppData.cars[carIndex].GetData();
+            carPhoto = carInfo.photo;
             ECname.Text = carInfo.name;
             ECage.Text = $"{carInfo.age}";
             await UpdateCarPhotoAsync();
         }
         private async Task UpdateCarPhotoAsync()
         {
-            var photoStream = await PhotoManager.DownloadPhotoAsync(carPhotoId);
+            var photoStream = await carPhoto.GetData();
             IMGcar.Source = ImageSource.FromStream(() => photoStream);
         }
         private void RegisterEvents()

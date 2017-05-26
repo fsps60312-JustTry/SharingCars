@@ -14,7 +14,7 @@ namespace SharingCars
         private static bool IsIntentRequestRegistered = false;
         public App ()
 		{
-			InitializeComponent();
+			//InitializeComponent();
 			MainPage = new NavigationPage(new SharingCars.MainTabbedPage.MainTabbedPage());
             RegisterIntentRequest();
         }
@@ -24,6 +24,9 @@ namespace SharingCars
             IsIntentRequestRegistered = true;
             var eventContent = new IntentAvailableEventHandler(async (Dictionary<string, string> intent) =>
               {
+                  StringBuilder s = new StringBuilder();
+                  foreach (var p in intent) s.AppendLine($"{p.Key}: {p.Value}");
+                  await Application.Current.MainPage.DisplayAlert("", s.ToString(), "OK");
                   await NotificationManager.HandleIntent(intent);
               });
             switch (Device.RuntimePlatform)

@@ -145,7 +145,7 @@ namespace SharingCars.Droid
                         $"\"{NotificationManager.Flags.Title}\":\"" + title + "\"," +
                         $"\"{NotificationManager.Flags.Message}\":\"" + msg + "\"," +
                         $"\"{NotificationManager.Flags.Type}\":\"" + type + "\"," +
-                        $"\"{NotificationManager.Flags.SenderId}\":\"" + AppData.AppData.DeviceId + "\"" +
+                        $"\"{NotificationManager.Flags.SenderId}\":\"" + AppData.AppDataConstants.DeviceId + "\"" +
                     "}" +
                 "}");
             String json = new String(jsonBuilder.ToString());

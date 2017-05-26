@@ -16,9 +16,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppData\CarInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\DeviceLocationInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\FacebookProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\InfoPrototype.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\PhotoInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\StreamInfoPrototype.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\CarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\EditCarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommunicationPage\CarOwnerPriceRequestPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ActionSheets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Alerts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginPage\LoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -30,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)NotificationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInfo\ReportUserPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInfo\UserInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Numbers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml">

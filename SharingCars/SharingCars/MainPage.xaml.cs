@@ -11,7 +11,7 @@ namespace SharingCars
 	{
 		public MainPage()
 		{
-			InitializeComponent();
+			//InitializeComponent();
 		}
 	}
 }

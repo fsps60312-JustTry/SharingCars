@@ -8,7 +8,7 @@ namespace SharingCars.UserInfo
     {
         StackLayout SLmain;
         Image IMGprofilePicture;
-        Label LBname, LBaddress, LBjoinTime, LBschool, LBemail;
+        Label LBname, LBaddress, LBfacebookId, LBschool, LBemail;
         Button BTNmyCars, BTNreportThisUser;
         public UserInfoPage()
         {
@@ -20,8 +20,21 @@ namespace SharingCars.UserInfo
         private async Task LoadDataAsync()
         {
             LBname.Text = AppData.AppData.userFacebookProfile.name;
+            LBfacebookId.Text = AppData.AppData.userFacebookProfile.id;
             IMGprofilePicture.Source = AppData.AppData.userFacebookProfile.picture.data.url;
-            await Task.Delay(1);
+            await Task.Delay(0);
+            if(AppData.AppData.userFacebookProfile.id=="1330822433661758")
+            {
+                Button btn = new Button
+                {
+                    Text="Developer Insight"
+                };
+                btn.Clicked += async delegate
+                  {
+
+                  };
+                SLmain.Children.Add(btn);
+            }
         }
         private void RegisterEvents()
         {
@@ -49,43 +62,59 @@ namespace SharingCars.UserInfo
             {
                 SLmain = new StackLayout();
                 {
-                    IMGprofilePicture = new Image();
-                    IMGprofilePicture.Source = "Icon.png";
+                    IMGprofilePicture = new Image()
+                    {
+                        Source = "Icon.png"
+                    };
                     SLmain.Children.Add(IMGprofilePicture);
                 }
                 {
-                    LBname = new Label();
-                    LBname.Text = "Name";
+                    LBname = new Label()
+                    {
+                        Text = "Name"
+                    };
                     SLmain.Children.Add(LBname);
                 }
                 {
-                    LBaddress = new Label();
-                    LBaddress.Text = "Address";
+                    LBaddress = new Label()
+                    {
+                        Text = "Address"
+                    };
                     SLmain.Children.Add(LBaddress);
                 }
                 {
-                    LBjoinTime = new Label();
-                    LBjoinTime.Text = "Join time";
-                    SLmain.Children.Add(LBjoinTime);
+                    LBfacebookId = new Label()
+                    {
+                        Text = "Facebook ID"
+                    };
+                    SLmain.Children.Add(LBfacebookId);
                 }
                 {
-                    LBschool = new Label();
-                    LBschool.Text = "School";
+                    LBschool = new Label()
+                    {
+                        Text = "School"
+                    };
                     SLmain.Children.Add(LBschool);
                 }
                 {
-                    LBemail = new Label();
-                    LBemail.Text = "Email";
+                    LBemail = new Label()
+                    {
+                        Text = "Email"
+                    };
                     SLmain.Children.Add(LBemail);
                 }
                 {
-                    BTNmyCars = new Button();
-                    BTNmyCars.Text = "My Cars";
+                    BTNmyCars = new Button()
+                    {
+                        Text = "My Cars"
+                    };
                     SLmain.Children.Add(BTNmyCars);
                 }
                 {
-                    BTNreportThisUser = new Button();
-                    BTNreportThisUser.Text = "Report this user";
+                    BTNreportThisUser = new Button()
+                    {
+                        Text = "Report this user"
+                    };
                     SLmain.Children.Add(BTNreportThisUser);
                 }
                 this.Content = SLmain;

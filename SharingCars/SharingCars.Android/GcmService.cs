@@ -65,7 +65,7 @@ namespace SharingCars.Droid
             var tags = new List<string>()
             {
                 "Android",
-                AppData.AppData.DeviceId
+                AppData.AppDataConstants.DeviceId
             };
             try
             {
@@ -86,16 +86,6 @@ namespace SharingCars.Droid
                     notificationContents[key] = intent.Extras.Get(key).ToString();
             }
             CreateNotification(notificationContents);
-            //string messageText = intent.Extras.GetString("message");
-            //string title = intent.Extras.GetString("title");
-            //if (!string.IsNullOrEmpty(messageText))
-            //{
-            //    CreateNotification(title, messageText);
-            //}
-            //else
-            //{
-            //    CreateNotification("Unknown message details", msg.ToString());
-            //}
         }
         static int id = 1, ie = 0;
         void CreateNotification(Dictionary<string,string>contents)

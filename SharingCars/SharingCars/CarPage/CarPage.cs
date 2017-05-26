@@ -15,12 +15,12 @@ namespace SharingCars.CarPage
             RegisterEvents();
             DoConstructionActions();
         }
-        private void UpdateViews()
+        private async Task UpdateViews()
         {
             SLcars.Children.Clear();
             for (int carIndex = 0; carIndex < AppData.AppData.cars.Count; carIndex++)
             {
-                var car = AppData.AppData.cars[carIndex];
+                var car = await AppData.AppData.cars[carIndex].GetData();
                 int carIndexNow = carIndex;
                 var btn = new Button()
                 {
@@ -38,16 +38,16 @@ namespace SharingCars.CarPage
         private async Task DownloadDataAsync()
         {
             AImain.IsRunning = AImain.IsVisible = true;
-            await AppData.AppData.Download(AppData.AppData.DataType.CarInfo);
+            await AppData.AppData.DownloadAsync(AppData.AppData.DataType.CarInfo);
             AImain.IsRunning = AImain.IsVisible = false;
         }
         private async void DoConstructionActions()
         {
             await DownloadDataAsync();
-            UpdateViews();
-            this.Appearing += delegate
+            await UpdateViews();
+            this.Appearing += async delegate
             {
-                UpdateViews();
+                await UpdateViews();
             };
         }
         private void RegisterEvents()

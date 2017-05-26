@@ -24,9 +24,10 @@ namespace SharingCars.CommunicationPage
             InitializeViews();
             RegisterEvents();
         }
-        private async Task Send(int price)
+        private async Task Send(int price,string senderId)
         {
-            await NotificationManager.Send.CarOwnerPriceRequest(price);
+            await NotificationManager.Send.CarOwnerPriceRequest(price,senderId);
+
         }
         private void RegisterEvents()
         {
@@ -42,7 +43,7 @@ namespace SharingCars.CommunicationPage
                       if (await DisplayAlert("Confirm", $"{ECprice.Label}: {price}\r\nAre you sure?", "Yes", "No"))
                       {
                           AImain.IsVisible = AImain.IsRunning = true;
-                          await Send(price);
+                          await Send(price, data[$"{NotificationManager.Flags.SenderId}"]);
                           AImain.IsVisible = AImain.IsRunning = false;
                           await DisplayAlert("", "Request sent successfully!", "OK");
                           await Navigation.PopAsync();

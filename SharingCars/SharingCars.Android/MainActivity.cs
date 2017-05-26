@@ -34,7 +34,7 @@ namespace SharingCars.Droid
         }
         private void HandleIntent()
         {
-            if (Intent.Extras == null) return;
+            if (Intent.Extras == null || Intent.GetStringExtra(NotificationManager.Flags.Type.ToString()) == null) return;
             var intent = new Dictionary<string, string>();
             foreach (var key in Intent.Extras.KeySet())
             {

@@ -19,7 +19,7 @@ namespace SharingCars.LoginPage
         public async Task<string> GetFacebookProfileJsonAsync()
         {
             this.IsVisible = true;
-            this.Source = $"https://www.facebook.com/v2.9/dialog/oauth?client_id={AppData.AppData.FacebookAppId}&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
+            this.Source = $"https://www.facebook.com/v2.9/dialog/oauth?client_id={AppData.AppDataConstants.FacebookAppId}&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
             bool done = false;
             string facebookProfileJson = null;
             var eventMethod = new EventHandler<WebNavigatedEventArgs>(async (object sender, WebNavigatedEventArgs e) =>

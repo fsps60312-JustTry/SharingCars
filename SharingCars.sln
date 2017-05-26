@@ -15,6 +15,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharingCars\SharingCars\SharingCars.projitems*{3eb94e75-9cfb-4182-a292-98476bf99feb}*SharedItemsImports = 4
 		SharingCars\SharingCars\SharingCars.projitems*{af172885-b512-459e-9f36-c8023d406f0a}*SharedItemsImports = 4
+		SharingCars\SharingCars\SharingCars.projitems*{b0255dd5-cf82-44ce-9d17-aa4dbfbdfc4f}*SharedItemsImports = 4
 		SharingCars\SharingCars\SharingCars.projitems*{b5d40daf-c878-4111-b676-66ac7d1bc5e1}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
