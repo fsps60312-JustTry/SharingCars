@@ -10,24 +10,28 @@ namespace SharingCars.AppData
 {
     static class AppData
     {
-        public enum DataType { FacebookId, CarInfo };
+        public enum DataType { FacebookProfile, CarInfo,DeviceLocation };
         //public static string tmp;
         public static string FacebookAppId { get { return "330515237367117"; } }
         public static string StorageAccountKey { get { return "GTH65N27gS8mOOTyQpl52kVzTW1m3/cG0Afi9HjjHhc27wuVHuKQ7eC7XpNa90UWJ7mh7Ilne1npFyHtNaiO/A=="; } }
         public static string StorageAccountName { get { return "sharingcars"; } }
-        public static string ModifiedDeviceId { get { return CrossDeviceInfo.Current.Id.ToLower(); } }
+        public static string DeviceId { get { return CrossDeviceInfo.Current.Id; } }
         public static FacebookProfile userFacebookProfile;
         public static List<CarInfo> cars = new List<CarInfo>();
+        public static DeviceLocationInfo deviceLocation = new DeviceLocationInfo();
         public static async Task Upload(DataType dataType)
         {
             string s = null;
             switch (dataType)
             {
-                case DataType.FacebookId:
+                case DataType.FacebookProfile:
                     s = JsonConvert.SerializeObject(userFacebookProfile);
                     break;
                 case DataType.CarInfo:
                     s = JsonConvert.SerializeObject(cars);
+                    break;
+                case DataType.DeviceLocation:
+                    s = JsonConvert.SerializeObject(deviceLocation);
                     break;
                 default:
                     string msg = $"Upload DataType \"{dataType}\" haven't been implemented!";
@@ -51,11 +55,14 @@ namespace SharingCars.AppData
             string s = await blockBlob.DownloadTextAsync();
             switch (dataType)
             {
-                case DataType.FacebookId:
+                case DataType.FacebookProfile:
                     userFacebookProfile = JsonConvert.DeserializeObject<FacebookProfile>(s);
                     break;
                 case DataType.CarInfo:
                     cars = JsonConvert.DeserializeObject<List<CarInfo>>(s);
+                    break;
+                case DataType.DeviceLocation:
+                    deviceLocation = JsonConvert.DeserializeObject<DeviceLocationInfo>(s);
                     break;
                 default:
                     string msg = $"Download DataType \"{dataType}\" haven't been implemented!";
@@ -64,7 +71,17 @@ namespace SharingCars.AppData
                     return;
             }
         }
-        private static CloudBlobContainer container
+        public static string StringMapToLowerCase(string s)
+        {
+            s = s.Replace("0", "00");
+            for(char c='A';c<='Z';c++)
+            {
+                s = s.Replace($"{c}", $"0{c}".ToLower());
+            }
+            foreach(char c in s) Trace.Assert('a' <= c && c <= 'z');
+            return s;
+        }
+        public static CloudBlobClient blobClient
         {
             get
             {
@@ -74,8 +91,14 @@ namespace SharingCars.AppData
                     $"AccountKey={AppData.StorageAccountKey};" +
                     "EndpointSuffix=core.windows.net"
                 );
-                var client = storageAccount.CreateCloudBlobClient();
-                return client.GetContainerReference(ModifiedDeviceId);
+                return storageAccount.CreateCloudBlobClient();
+            }
+        }
+        public static CloudBlobContainer container
+        {
+            get
+            {
+                return blobClient.GetContainerReference(StringMapToLowerCase(DeviceId));
             }
         }
         public static async Task<CloudBlockBlob> GetBlockBlobAsync(string name)

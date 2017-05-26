@@ -25,8 +25,7 @@ namespace SharingCars.CarPage
         int carIndex;
         private async Task<bool> AddCarAndExit()
         {
-            int age;
-            if (!int.TryParse(ECage.Text, out age))
+            if (!int.TryParse(ECage.Text, out int age))
             {
                 await DisplayAlert("", $"欄位\"{ECage.Label}\"的格式不正確", "OK");
                 return false;
@@ -115,8 +114,10 @@ namespace SharingCars.CarPage
         private void InitializeViews()
         {
             {
-                TIdone = new ToolbarItem();
-                TIdone.Text = "Done";
+                TIdone = new ToolbarItem()
+                {
+                    Text = "Done"
+                };
                 this.ToolbarItems.Add(TIdone);
             }
             {
@@ -129,21 +130,27 @@ namespace SharingCars.CarPage
                         SLmain.Children.Add(AImain);
                     }
                     {
-                        IMGcar = new Image();
-                        IMGcar.Source = "Icon.png";
+                        IMGcar = new Image()
+                        {
+                            Source = "Icon.png"
+                        };
                         SLmain.Children.Add(IMGcar);
                     }
                     {
                         TVmain = new TableView(new TableRoot());
                         TVmain.Root.Add(new TableSection("Info"));
                         {
-                            ECname = new EntryCell();
-                            ECname.Label = "Name";
+                            ECname = new EntryCell()
+                            {
+                                Label = "Name"
+                            };
                             TVmain.Root[0].Add(ECname);
                         }
                         {
-                            ECage = new EntryCell();
-                            ECage.Label = "車齡(年)";
+                            ECage = new EntryCell()
+                            {
+                                Label = "車齡(年)"
+                            };
                             TVmain.Root[0].Add(ECage);
                         }
                         SLmain.Children.Add(TVmain);

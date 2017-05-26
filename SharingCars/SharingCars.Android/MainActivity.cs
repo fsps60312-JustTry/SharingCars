@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Collections.Generic;
 
 using Android.App;
 using Android.Content.PM;
@@ -8,6 +10,7 @@ using Android.Widget;
 using Android.OS;
 using Gcm.Client;
 using System.IO;
+using Android.Content;
 
 namespace SharingCars.Droid
 {
@@ -27,15 +30,21 @@ namespace SharingCars.Droid
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 			LoadApplication (new SharingCars.App ());
             RegisterEverything(bundle);
+            HandleIntent();
         }
-        public void ToastNotify(string msg)
+        private void HandleIntent()
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            if (Intent.Extras == null) return;
+            var intent = new Dictionary<string, string>();
+            foreach (var key in Intent.Extras.KeySet())
             {
-                //new AlertDialog.Builder(this).SetMessage(msg).Show();
-                Toast.MakeText(this, msg, ToastLength.Long).Show();
-            });
+                intent[key] = Intent.GetStringExtra(key);
+            }
+            OnIntentAvailable(intent);
         }
+        public static App.IntentAvailableEventHandler IntentAvailable;
+        private void OnIntentAvailable(Dictionary<string, string> intent) { IntentAvailable?.Invoke(intent); }
+        #region Registings
         private void RegisterEverything(Bundle bundle)
         {
             RegisterForErrorReporting();
@@ -52,7 +61,7 @@ namespace SharingCars.Droid
 
                 // Register for push notification
                 System.Diagnostics.Debug.WriteLine("Registering...");
-                GcmClient.Register(this, PushHandlerBroadcastReceiver.SENDER_IDS);
+                GcmClient.Register(this, MyBroadcastReceiver.SenderID);
             }
             catch (Java.Net.MalformedURLException)
             {
@@ -66,13 +75,6 @@ namespace SharingCars.Droid
         private void RegisterForGoogleMap(Bundle bundle)
         {
             Xamarin.FormsMaps.Init(this, bundle);
-        }
-        private void CreateAndShowDialog(string message, string title)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.SetMessage(message);
-            builder.SetTitle(title);
-            builder.Create().Show();
         }
         private void RegisterForErrorReporting()
         {
@@ -92,7 +94,24 @@ namespace SharingCars.Droid
             };
             DisplayCrashReport();
         }
-
+        #endregion
+        #region Alert & Toast
+        private void CreateAndShowDialog(string message, string title)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetMessage(message);
+            builder.SetTitle(title);
+            builder.Create().Show();
+        }
+        public void ToastNotify(string msg)
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                //new AlertDialog.Builder(this).SetMessage(msg).Show();
+                Toast.MakeText(this, msg, ToastLength.Long).Show();
+            });
+        }
+        #endregion
         #region Error handling
 
         internal static void LogUnhandledException(Exception exception)

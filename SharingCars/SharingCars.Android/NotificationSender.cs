@@ -14,6 +14,8 @@ using Java.Lang;
 using Javax.Crypto.Spec;
 using Java.Text;
 
+using System.Collections.Generic;
+
 namespace SharingCars.Droid
 {
     class NotificationSender
@@ -66,7 +68,7 @@ namespace SharingCars.Droid
           *            claimed. For example,
           *            "http://<namespace>.servicebus.windows.net/<hubName>"
           */
-        private static String generateSasToken(String uri)
+        private static String GenerateSasToken(String uri)
         {
             String targetUri;
             String token = null;
@@ -121,19 +123,39 @@ namespace SharingCars.Droid
           *
           * @param v
           */
-        public static void SendNotification(string _msg)
+        public static void SendNotification(string title, string _msg, string type, Dictionary<string, string> intent = null, string tag = null)
         {
             String msg = new String(_msg);
             //EditText notificationText = (EditText)findViewById(R.id.editTextNotificationMessage);
             //String json = "{\"data\":{\"message\":\"" + notificationText.getText().toString() + "\"}}";
-            String json = new String("{\"data\":{\"message\":\"" + msg + "\"}}");
+            StringBuilder jsonBuilder = new StringBuilder();
+            jsonBuilder.Append(
+                "{" +
+                    "\"data\":" +
+                    "{");
+            if (intent != null)
+            {
+                foreach (var p in intent)
+                {
+                    jsonBuilder.Append(
+                            $"\"{p.Key}\":\"{p.Value}\",");
+                }
+            }
+            jsonBuilder.Append(
+                        $"\"{NotificationManager.Flags.Title}\":\"" + title + "\"," +
+                        $"\"{NotificationManager.Flags.Message}\":\"" + msg + "\"," +
+                        $"\"{NotificationManager.Flags.Type}\":\"" + type + "\"," +
+                        $"\"{NotificationManager.Flags.SenderId}\":\"" + AppData.AppData.DeviceId + "\"" +
+                    "}" +
+                "}");
+            String json = new String(jsonBuilder.ToString());
             new Thread(new System.Action(() =>
             {
                 try
                 {
-                // Based on reference documentation...
-                // http://msdn.microsoft.com/library/azure/dn223273.aspx
-                ParseConnectionString(HubFullAccess);
+                    // Based on reference documentation...
+                    // http://msdn.microsoft.com/library/azure/dn223273.aspx
+                    ParseConnectionString(HubFullAccess);
                     URL url = new URL("" + HubEndpoint + HubName +
                             "/messages/?api-version=2015-01");
 
@@ -141,33 +163,35 @@ namespace SharingCars.Droid
 
                     try
                     {
-                    // POST request
-                    urlConnection.DoOutput = true;//.SetDoOutput(true);
+                        // POST request
+                        urlConnection.DoOutput = true;//.SetDoOutput(true);
 
-                    // Authenticate the POST request with the SaS token
-                    urlConnection.SetRequestProperty("Authorization",
-                            generateSasToken(new String(url.ToString())).ToString());
+                        // Authenticate the POST request with the SaS token
+                        urlConnection.SetRequestProperty("Authorization",
+                                GenerateSasToken(new String(url.ToString())).ToString());
 
-                    // Notification format should be GCM
-                    urlConnection.SetRequestProperty("ServiceBusNotification-Format", "gcm");
+                        // Notification format should be GCM
+                        urlConnection.SetRequestProperty("ServiceBusNotification-Format", "gcm");
 
-                    // Include any tags
-                    // Example below targets 3 specific tags
-                    // Refer to : https://azure.microsoft.com/en-us/documentation/articles/notification-hubs-routing-tag-expressions/
-                    // urlConnection.setRequestProperty("ServiceBusNotification-Tags", 
-                    //        "tag1 || tag2 || tag3");
+                        // Include any tags
+                        // Example below targets 3 specific tags
+                        // Refer to : https://azure.microsoft.com/en-us/documentation/articles/notification-hubs-routing-tag-expressions/
+                        // urlConnection.setRequestProperty("ServiceBusNotification-Tags", 
+                        //        "tag1 || tag2 || tag3");
 
-                    // Send notification message
-                    urlConnection.SetFixedLengthStreamingMode(json.Length());
+                        // Send notification message
+                        if (tag != null) urlConnection.SetRequestProperty("ServiceBusNotification-Tags", tag);
+
+                        urlConnection.SetFixedLengthStreamingMode(json.Length());
                         OutputStream bodyStream = new BufferedOutputStream(urlConnection.OutputStream/*.GetOutputStream()*/);
                         bodyStream.Write(json.GetBytes());
                         bodyStream.Close();
 
-                    //MainActivity.CurrentActivity.ToastNotify(urlConnection.ToString());
-                    // Get reponse
-                    urlConnection.Connect();
+                        //MainActivity.CurrentActivity.ToastNotify(urlConnection.ToString());
+                        // Get reponse
+                        urlConnection.Connect();
                         int responseCode = (int)urlConnection.ResponseCode;//.GetResponseCode();
-                    if ((responseCode != 200) && (responseCode != 201))
+                        if ((responseCode != 200) && (responseCode != 201))
                         {
                             BufferedReader br = new BufferedReader(new InputStreamReader((urlConnection.ErrorStream/*.getErrorStream()*/)));
                             String line;
@@ -188,11 +212,11 @@ namespace SharingCars.Droid
                 catch (Exception e)
                 {
                     MainActivity.CurrentActivity.ToastNotify("Exception Sending Notification : " + e.Message.ToString());
-                //if (isVisible)
-                //{
-                //    ToastNotify("Exception Sending Notification : " + e.getMessage().toString());
-                //}
-            }
+                    //if (isVisible)
+                    //{
+                    //    ToastNotify("Exception Sending Notification : " + e.getMessage().toString());
+                    //}
+                }
             })).Start();
         }
     }

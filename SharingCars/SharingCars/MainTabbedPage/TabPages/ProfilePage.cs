@@ -27,33 +27,45 @@ namespace SharingCars.MainTabbedPage.TabPages
             {
                 SLmain = new StackLayout();
                 {
-                    BTNprofile = new Button();
-                    BTNprofile.Text = "Profile";
+                    BTNprofile = new Button()
+                    {
+                        Text = "Profile"
+                    };
                     SLmain.Children.Add(BTNprofile);
                 }
                 {
-                    BTNtravelCredit = new Button();
-                    BTNtravelCredit.Text = "Travel Credit";
+                    BTNtravelCredit = new Button()
+                    {
+                        Text = "Travel Credit"
+                    };
                     SLmain.Children.Add(BTNtravelCredit);
                 }
                 {
-                    BTNlistYourSpace = new Button();
-                    BTNlistYourSpace.Text = "List your space";
+                    BTNlistYourSpace = new Button()
+                    {
+                        Text = "List your space"
+                    };
                     SLmain.Children.Add(BTNlistYourSpace);
                 }
                 {
-                    BTNsettings = new Button();
-                    BTNsettings.Text = "Settings";
+                    BTNsettings = new Button()
+                    {
+                        Text = "Settings"
+                    };
                     SLmain.Children.Add(BTNsettings);
                 }
                 {
-                    BTNhelp = new Button();
-                    BTNhelp.Text = "Help";
+                    BTNhelp = new Button()
+                    {
+                        Text = "Help"
+                    };
                     SLmain.Children.Add(BTNhelp);
                 }
                 {
-                    BTNgiveUsFeedback = new Button();
-                    BTNgiveUsFeedback.Text = "Give us feedback";
+                    BTNgiveUsFeedback = new Button()
+                    {
+                        Text = "Give us feedback"
+                    };
                     SLmain.Children.Add(BTNgiveUsFeedback);
                 }
                 this.Content = SLmain;

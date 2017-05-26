@@ -22,8 +22,10 @@ namespace SharingCars.CarPage
             {
                 var car = AppData.AppData.cars[carIndex];
                 int carIndexNow = carIndex;
-                var btn = new Button();
-                btn.Text = car.name;
+                var btn = new Button()
+                {
+                    Text = car.name
+                };
                 btn.Clicked += async delegate (object sender, EventArgs e)
                 {
                     (sender as Button).IsEnabled = false;
@@ -63,20 +65,26 @@ namespace SharingCars.CarPage
         private void InitializeViews()
         {
             {
-                TIadd = new ToolbarItem();
-                TIadd.Text = "Add";
+                TIadd = new ToolbarItem()
+                {
+                    Text = "Add"
+                };
                 this.ToolbarItems.Add(TIadd);
             }
             {
-                TIupdate = new ToolbarItem();
-                TIupdate.Text = "Update";
+                TIupdate = new ToolbarItem()
+                {
+                    Text = "Update"
+                };
                 this.ToolbarItems.Add(TIupdate);
             }
             {
                 SLmain = new StackLayout();
                 {
-                    AImain = new ActivityIndicator();
-                    AImain.IsVisible = false;
+                    AImain = new ActivityIndicator()
+                    {
+                        IsVisible = false
+                    };
                     SLmain.Children.Add(AImain);
                 }
                 {

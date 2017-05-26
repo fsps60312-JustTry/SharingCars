@@ -92,11 +92,13 @@ namespace SharingCars.LoginPage
             };
             BTNskip.Clicked += async delegate
             {
+                BTNskip.IsEnabled = false;
                 if (await DisplayAlert("", "Some functions will be restricted", "OK", "Cancel"))
                 {
                     AppData.AppData.userFacebookProfile = new AppData.FacebookProfile();
                     await Navigation.PopModalAsync();
                 }
+                BTNskip.IsEnabled = true;
             };
         }
         private void InitializeViews()
@@ -113,13 +115,17 @@ namespace SharingCars.LoginPage
                 GDmain.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
                 GDmain.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
                 {
-                    BTNfacebookLogIn = new Button();
-                    BTNfacebookLogIn.Text = "Log in with Facebook";
+                    BTNfacebookLogIn = new Button()
+                    {
+                        Text = "Log in with Facebook"
+                    };
                     GDmain.Children.Add(BTNfacebookLogIn, 1, 1);
                 }
                 {
-                    LBdeviceId = new Label();
-                    LBdeviceId.Text = $"此裝置的ID: {CrossDeviceInfo.Current.Id}";
+                    LBdeviceId = new Label()
+                    {
+                        Text = $"此裝置的ID: {CrossDeviceInfo.Current.Id}"
+                    };
                     GDmain.Children.Add(LBdeviceId, 1, 2);
                 }
                 {
@@ -128,8 +134,10 @@ namespace SharingCars.LoginPage
                     Grid.SetColumnSpan(WVfacebook, 3);
                 }
                 {
-                    BTNskip = new Button();
-                    BTNskip.Text = "Skip as Guest User";
+                    BTNskip = new Button()
+                    {
+                        Text = "Skip as Guest User"
+                    };
                     GDmain.Children.Add(BTNskip, 1, 4);
                 }
                 this.Content = GDmain;
