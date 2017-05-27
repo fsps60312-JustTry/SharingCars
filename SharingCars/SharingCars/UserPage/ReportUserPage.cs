@@ -1,15 +1,15 @@
 ﻿using Xamarin.Forms;
 
-namespace SharingCars.UserInfo
+namespace SharingCars.UserPage
 {
     class ReportUserPage : ContentPage
     {
         public ReportUserPage()
         {
             this.Title = "Report User";
-            DoConstructionActions();
+            DoInitializationTasksAsync();
         }
-        private async void DoConstructionActions()
+        private async void DoInitializationTasksAsync()
         {
             await DisplayAlert("User reported", "", "OK");
             await Navigation.PopAsync();

@@ -17,7 +17,7 @@ namespace SharingCars.MainTabbedPage.TabPages
             BTNprofile.Clicked += async delegate (object sender, EventArgs e)
             {
                 (sender as Button).IsEnabled = false;
-                await Navigation.PushAsync(new UserInfo.UserInfoPage());
+                await Navigation.PushAsync(new UserPage.UserInfoPage(AppData.AppData.user.Id));
                 (sender as Button).IsEnabled = true;
             };
         }

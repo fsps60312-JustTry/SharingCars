@@ -2,39 +2,39 @@
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace SharingCars.UserInfo
+namespace SharingCars.UserPage
 {
     class UserInfoPage : ContentPage
     {
         StackLayout SLmain;
         Image IMGprofilePicture;
-        Label LBname, LBaddress, LBfacebookId, LBschool, LBemail;
+        Label LBname, LBaddress, LBschool, LBemail;
         Button BTNmyCars, BTNreportThisUser;
-        public UserInfoPage()
+        public UserInfoPage(ulong userId)
         {
             InitializeViews();
             RegisterEvents();
-            LoadData();
+            LoadData(userId);
         }
-        private async void LoadData() { await LoadDataAsync(); }
-        private async Task LoadDataAsync()
+        private async void LoadData(ulong userId) { await LoadDataAsync(userId); }
+        private async Task LoadDataAsync(ulong userId)
         {
-            LBname.Text = AppData.AppData.userFacebookProfile.name;
-            LBfacebookId.Text = AppData.AppData.userFacebookProfile.id;
-            IMGprofilePicture.Source = AppData.AppData.userFacebookProfile.picture.data.url;
-            await Task.Delay(0);
-            if(AppData.AppData.userFacebookProfile.id=="1330822433661758")
+            var userData = await new AppData.UserInfo { Id = userId }.GetData();
+            LBname.Text = userData.Name;
+            IMGprofilePicture.Source = userData.PhotoSource;
+            if (userId != AppData.AppData.user.Id) BTNmyCars.IsVisible = false;
+            if (userId == AppData.AppData.user.Id&&userData.FacebookId == "1330822433661758")
             {
                 Button btn = new Button
                 {
-                    Text="Developer Insight"
+                    Text = "Developer Insight"
                 };
                 btn.Clicked += async delegate
-                  {
-                      btn.IsEnabled = false;
-                      await Navigation.PushAsync(new Developer.DeveloperPage());
-                      btn.IsEnabled = true;
-                  };
+                    {
+                        btn.IsEnabled = false;
+                        await Navigation.PushAsync(new Developer.DeveloperPage());
+                        btn.IsEnabled = true;
+                    };
                 SLmain.Children.Add(btn);
             }
         }
@@ -53,12 +53,13 @@ namespace SharingCars.UserInfo
                         }
                         catch(Exception error)
                         {
-                            await new SharingCars.Utils.Alerts.ErrorAlert(error).Show();
+                            await new SharingCars.Utils.Alerts.ErrorAlert("測試",error).Show();
                         }
                     }
                     else
                     {
-                        throw new Exception();
+                        System.Diagnostics.Trace.Assert(false);
+                        //throw new Exception();
                     }
                 }
             }));
@@ -101,13 +102,6 @@ namespace SharingCars.UserInfo
                         Text = "Address"
                     };
                     SLmain.Children.Add(LBaddress);
-                }
-                {
-                    LBfacebookId = new Label()
-                    {
-                        Text = "Facebook ID"
-                    };
-                    SLmain.Children.Add(LBfacebookId);
                 }
                 {
                     LBschool = new Label()

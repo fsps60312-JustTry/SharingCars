@@ -4,6 +4,7 @@ using System.Text;
 using Xamarin.Forms;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SharingCars.Utils.Alerts;
+using Newtonsoft.Json;
 
 namespace SharingCars.Developer
 {
@@ -33,11 +34,15 @@ namespace SharingCars.Developer
                       btn.Clicked += async delegate
                         {
                             btn.IsEnabled = false;
-                            string text = btn.Text;
-                            btn.Text =$"↓{btn.Text}";
-                            var s = await p.Value.DownloadTextAsync();
-                            btn.Text = text;
-                            await new JustAlert(s).Show();
+                            try
+                            {
+                                string text = btn.Text;
+                                btn.Text = $"↓{btn.Text}";
+                                var s = await Azure.DownloadTextAsync(p.Value);
+                                btn.Text = text;
+                                await new JustAlert(s).Show();
+                            }
+                            catch (OperationCanceledException) { }
                             btn.IsEnabled = true;
                         };
                       SLmain.Children.Add(btn);

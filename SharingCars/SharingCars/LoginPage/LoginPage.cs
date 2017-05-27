@@ -101,7 +101,7 @@ namespace SharingCars.LoginPage
             else
             {
                 facebookProfileJson = facebookProfileJson.Replace("\\/", "/");
-                AppData.AppData.userFacebookProfile = (await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AppData.FacebookProfile>(facebookProfileJson)));
+                await AppData.Temporary.Data.SetFromFacebookProfile((await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AppData.Temporary.FacebookProfile>(facebookProfileJson))));
                 await Navigation.PopModalAsync();
                 return true;
             }
@@ -119,7 +119,7 @@ namespace SharingCars.LoginPage
                 BTNskip.IsEnabled = false;
                 if (await DisplayAlert("", "Some functions will be restricted", "OK", "Cancel"))
                 {
-                    AppData.AppData.userFacebookProfile = new AppData.FacebookProfile();
+                    await AppData.Temporary.Data.SetFromFacebookProfile(new AppData.Temporary.FacebookProfile());
                     await Navigation.PopModalAsync();
                 }
                 BTNskip.IsEnabled = true;

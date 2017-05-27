@@ -58,12 +58,12 @@ namespace SharingCars.MainTabbedPage.TabPages
                       }
                       else
                       {
-                          if (await Application.Current.MainPage.DisplayAlert("Can't get your location", $"Choose \"OK\" to use previous location", "OK", "Cancel"))
+                          if (await Application.Current.MainPage.DisplayAlert("無法取得您的位置", $"您要使用上次記錄到的位置嗎？", "Yes", "No"))
                           {
                               await AppData.AppData.DownloadAsync(AppData.AppData.DataType.DeviceLocation);
                               if (!AppData.AppData.deviceLocation.IsEnabled)
                               {
-                                  await Application.Current.MainPage.DisplayAlert("", "Previous location doesn't exist!", "OK");
+                                  await Application.Current.MainPage.DisplayAlert("", "您還沒有任何位置紀錄哦！", "OK");
                               }
                               else
                               {
@@ -74,7 +74,7 @@ namespace SharingCars.MainTabbedPage.TabPages
                   }
                   catch(Exception error)
                   {
-                      await new ErrorAlert(error).Show();
+                      await new ErrorAlert("取得裝置位置失敗",error).Show();
                   }
                   AIhere.IsVisible = AIhere.IsRunning = false;
                   BTNhere.IsEnabled = true;
@@ -82,9 +82,16 @@ namespace SharingCars.MainTabbedPage.TabPages
             BTNbroadcast.Clicked += async delegate
             {
                 BTNbroadcast.IsEnabled = false;
-                if (await Application.Current.MainPage.DisplayAlert("確認", "向周圍的車主發送通知？", "OK", "Cancel"))
+                if (!AppData.AppData.deviceLocation.IsEnabled)
                 {
-                    await PushNotificationToNearByCarOwners(MAP.VisibleRegion);
+                    await App.Current.MainPage.DisplayAlert("", "請先更新您的位置", "OK");
+                }
+                else
+                {
+                    if (await Application.Current.MainPage.DisplayAlert("確認", "向周圍的車主發送通知？", "OK", "Cancel"))
+                    {
+                        await PushNotificationToNearByCarOwners(MAP.VisibleRegion);
+                    }
                 }
                 BTNbroadcast.IsEnabled = true;
             };

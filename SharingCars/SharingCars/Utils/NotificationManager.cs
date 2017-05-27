@@ -9,10 +9,11 @@ namespace SharingCars
 {
     class NotificationManager
     {
-        public enum Flags {Title,Message,Type,SenderId };
-        public enum SendType { CarRequest, CarOwnerPriceRequest,OfficialNotification };
+        public enum Flags {Title,Message,Type,DeviceId,UserId };
+        public enum SendType { CarRequest, CarOwnerPriceRequest,CarAccepted,OfficialNotification };
         public enum CarRequestFlag { RequestLatitude, RequestLongitude, RequestRadius, DeviceLatitude, DeviceLongitude };
-        public enum CarOwnerPriceRequestFlag { Price};
+        public enum CarOwnerPriceRequestFlag { Price,CarId};
+        public enum CarAcceptedFlag { };
         public enum OfficialNotificationFlag { };
         public static async Task HandleIntent(Dictionary<string, string> intent)
         {
@@ -21,7 +22,7 @@ namespace SharingCars
             if (type == $"{SendType.CarRequest}")
             {
                 foreach (var f in Enum.GetValues(typeof(CarRequestFlag))) Trace.Assert(intent.ContainsKey($"{f}"));
-                if (await Application.Current.MainPage.DisplayAlert(intent[$"{Flags.Message}"], "Accept?\r\n按下「Yes」之後您將需要在下一個頁面開價", "Yes", "No"))
+                if (await Application.Current.MainPage.DisplayAlert(intent[$"{Flags.Message}"], "您要接受這個訂單並開價嗎?", "Yes", "No"))
                 {
                     await Application.Current.MainPage.Navigation.PushAsync(new CommunicationPage.CarOwnerPriceRequestPage(intent));
                 }
@@ -29,7 +30,21 @@ namespace SharingCars
             else if (type == $"{SendType.CarOwnerPriceRequest}")
             {
                 foreach (var f in Enum.GetValues(typeof(CarOwnerPriceRequestFlag))) Trace.Assert(intent.ContainsKey($"{f}"));
-                await Application.Current.MainPage.DisplayAlert("", $"{intent[Flags.SenderId.ToString()]} offer a price of {intent[CarOwnerPriceRequestFlag.Price.ToString()]}", "OK");
+                if(await Application.Current.MainPage.DisplayAlert(intent[$"{Flags.Message}"],
+                    "您要查看詳細資料嗎?", "Yes","No"))
+                {
+                    await Application.Current.MainPage.Navigation.PushAsync(new CommunicationPage.ViewPriceRequestByCarOwnerPage(intent));
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("", "繼續等待其他車主的回應吧！", "OK");
+                }
+            }
+            else if (type == $"{SendType.CarAccepted}")
+            {
+                foreach (var f in Enum.GetValues(typeof(CarAcceptedFlag))) Trace.Assert(intent.ContainsKey($"{f}"));
+                await App.Current.MainPage.Navigation.PushAsync(new UserPage.UserInfoPage(ulong.Parse(intent[$"{Flags.UserId}"])));
+                await App.Current.MainPage.DisplayAlert("", $"這是租車人的資料，趕快和他聯絡並完成交易吧！", "OK");
             }
             else if(type==$"{SendType.OfficialNotification}")
             {
@@ -48,17 +63,26 @@ namespace SharingCars
         }
         public class Send
         {
-            public static async Task CarOwnerPriceRequest(int price, string senderId)
+            public static async Task CarAccepted(string senderId)
             {
-                await SendNotification("Sharing Cars", $"{AppData.AppData.userFacebookProfile.name} offered a price", $"{SendType.CarOwnerPriceRequest}",
+                await SendNotification("Sharing Cars",
+                    $"{(await AppData.AppData.user.GetData()).Name}接受了您的開價，點擊此訊息以取得聯絡方式", $"{SendType.CarAccepted}",
+                    new Dictionary<string, string>
+                    {}, senderId);
+            }
+            public static async Task CarOwnerPriceRequest(int price,ulong carId, string senderId)
+            {
+                await SendNotification("Sharing Cars",
+                    $"{(await AppData.AppData.user.GetData()).Name}開價{price}元且願意出借車輛：{(await new AppData.CarInfo { Id = carId }.GetData()).name}", $"{SendType.CarOwnerPriceRequest}",
                     new Dictionary<string, string>
                     {
-                        { $"{CarOwnerPriceRequestFlag.Price}", $"{price}" }
+                        { $"{CarOwnerPriceRequestFlag.Price}", $"{price}" },
+                        { $"{CarOwnerPriceRequestFlag.CarId}", $"{carId}" }
                     }, senderId);
             }
             public static async Task CarRequest(Xamarin.Forms.Maps.MapSpan region)
             {
-                await SendNotification("Sharing Cars", $"{AppData.AppData.userFacebookProfile.name} need a car", $"{SendType.CarRequest}",
+                await SendNotification("Sharing Cars", $"{(await AppData.AppData.user.GetData()).Name}需要借車", $"{SendType.CarRequest}",
                     new Dictionary<string, string>
                     {
                         { $"{CarRequestFlag.RequestLatitude}", $"{region.Center.Latitude}" },

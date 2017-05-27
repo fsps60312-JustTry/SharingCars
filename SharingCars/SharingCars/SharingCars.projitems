@@ -15,13 +15,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppData\AppData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\CarInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\DeviceLocationInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AppData\FacebookProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\Temporary\Data.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\Temporary\FacebookProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\InfoPrototype.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\PhotoInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppData\StreamInfoPrototype.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppData\UserInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\CarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CarPage\EditCarPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommunicationPage\CarOwnerPriceRequestPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommunicationPage\CarView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommunicationPage\ViewPriceRequestByCarOwnerPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Developer\DeveloperPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Developer\ErrorListPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Developer\PushNotificationPage.cs" />
@@ -35,9 +39,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\MainTabbedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ExplorePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainTabbedPage\TabPages\ProfilePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Azure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\NotificationManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInfo\ReportUserPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInfo\UserInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserPage\ReportUserPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserPage\UserInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Numbers.cs" />
   </ItemGroup>
   <ItemGroup>

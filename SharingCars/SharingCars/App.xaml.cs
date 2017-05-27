@@ -24,9 +24,9 @@ namespace SharingCars
             IsIntentRequestRegistered = true;
             var eventContent = new IntentAvailableEventHandler(async (Dictionary<string, string> intent) =>
               {
-                  StringBuilder s = new StringBuilder();
-                  foreach (var p in intent) s.AppendLine($"{p.Key}: {p.Value}");
-                  await Application.Current.MainPage.DisplayAlert("", s.ToString(), "OK");
+                  //StringBuilder s = new StringBuilder();
+                  //foreach (var p in intent) s.AppendLine($"{p.Key}: {p.Value}");
+                  //await Application.Current.MainPage.DisplayAlert("", s.ToString(), "OK");
                   await NotificationManager.HandleIntent(intent);
               });
             switch (Device.RuntimePlatform)

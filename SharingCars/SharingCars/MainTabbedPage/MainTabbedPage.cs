@@ -21,11 +21,11 @@ namespace SharingCars.MainTabbedPage
             {
                 return new TabPage();
             });
-            DoConstructionActions();
+            DoInitializationTasksAsync();
         }
-        private async void DoConstructionActions()
+        private async void DoInitializationTasksAsync()
         {
-            if (AppData.AppData.userFacebookProfile == null)
+            if (AppData.AppData.user == null)
             {
                 //await DisplayAlert("", "Not implemented", "OK");
                 await Navigation.PushModalAsync(new LoginPage.LoginPage());

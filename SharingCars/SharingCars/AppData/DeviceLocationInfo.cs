@@ -28,36 +28,37 @@ namespace SharingCars.AppData
                 {
                     if (error.Message != "A task was canceled.")
                     {
-                        await new ErrorAlert(error).Show();
+                        await new ErrorAlert("取得裝置位置失敗",error).Show();
                     }
                 }
                 catch (Exception error)
                 {
-                    await new ErrorAlert(error).Show();
+                    await new ErrorAlert("取得裝置位置失敗",error).Show();
                 }
                 if (position == null)
                 {
-                    switch (await new DeviceLocationUpdateFailed().Show())
+                    var selection = await new DeviceLocationUpdateFailed().Show();
+                    switch (selection)
                     {
                         case null:
                         case DeviceLocationUpdateFailed.Cancel:
                             return false;
                         case DeviceLocationUpdateFailed.Button1:
                             goto indexRetry;
-                        //case DeviceLocationUpdateFailed.Button2:
-                        //    try
-                        //    {
-                        //        await new TodoAlert().Show();
-                        //        //position=await CrossGeolocator.Current.GetLastKnownLocationAsync();
-                        //        return false;
-                        //    }
-                        //    catch (Exception error)
-                        //    {
-                        //        await new ErrorAlert(error).Show();
-                        //    }
-                        //    break;
+                        case DeviceLocationUpdateFailed.Button2:
+                            try
+                            {
+                                await new TodoAlert().Show();
+                                //position=await CrossGeolocator.Current.GetLastKnownLocationAsync();
+                                return false;
+                            }
+                            catch (Exception error)
+                            {
+                                await new ErrorAlert("取得裝置位置失敗: 未知的錯誤", error).Show();
+                            }
+                            break;
                         default:
-                            await new ErrorAlert(new Exception()).Show();
+                            await new ErrorAlert($"未知的選項：{selection}",new Exception()).Show();
                             break;
                     }
                 }
@@ -69,7 +70,7 @@ namespace SharingCars.AppData
             }
             catch(Exception error)
             {
-                await new ErrorAlert(error).Show();
+                await new ErrorAlert("取得裝置位置失敗", error).Show();
                 return false;
             }
         }

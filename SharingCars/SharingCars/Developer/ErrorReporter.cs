@@ -5,20 +5,48 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using SharingCars.Utils.Alerts;
+using System.Diagnostics;
 
 namespace SharingCars
 {
     class ErrorReporter
     {
-        public static async void ReportError(Exception error) { await ReportErrorAsync(error); }
-        public static async Task ReportErrorAsync(Exception error)
+        public static void Assert(bool condition)
         {
-            await ReportErrorAsync(error.ToString());
+            try
+            {
+                Trace.Assert(condition);
+            }
+            catch(Exception error)
+            {
+                ReportError("Assertion failed",error);
+            }
+        }
+        public static void Report(string s)
+        {
+            try
+            {
+                throw new Exception(s);
+            }
+            catch(Exception error)
+            {
+                ReportError("錯誤訊息",error);
+            }
+        }
+        public static async void ReportError(string message,Exception error) { await ReportErrorAsync(message,error); }
+        public static async Task ReportErrorAsync(string message, Exception error)
+        {
+            await ReportErrorAsync(new Exception(message, error));
+        }
+        private static async Task ReportErrorAsync(Exception error)
+        {
+            await ReportErrorAsync(JsonConvert.SerializeObject(error));
         }
         public static async Task ReportErrorAsync(string s)
         {
             var directory = await GetBlobDirectoryAsync();
-            await directory.GetBlockBlobReference(DateTime.Now.Ticks.ToString()).UploadTextAsync(s);
+            await Azure.UploadTextAsync(directory.GetBlockBlobReference(DateTime.Now.Ticks.ToString()), s);
         }
         public static async Task<Dictionary<string,CloudBlockBlob>> DownloadErrorListAsync()
         {
@@ -29,7 +57,7 @@ namespace SharingCars
             {
                 BlobResultSegment resultSegment = await container.ListBlobsSegmentedAsync(token);
                 token = resultSegment.ContinuationToken;
-                foreach (IListBlobItem blob in resultSegment.Results)
+                foreach (var blob in resultSegment.Results)
                 {
                     // Blob type will be CloudBlockBlob, CloudPageBlob or CloudBlobDirectory
 
@@ -42,7 +70,7 @@ namespace SharingCars
                         key = $"{ dateTime.ToLongDateString()} {dateTime.ToLongTimeString()} ({name})";
                     }
                     else key = $"Error parsing DateTime: {name}";
-                    var blockBlob = blob.Parent.GetBlockBlobReference(name);
+                    var blockBlob = (blob.Parent as CloudBlobDirectory).GetBlockBlobReference(name) as CloudBlockBlob;
                     ans.Add(key, blockBlob);
                     //Console.WriteLine("{0} (type: {1}", blob.Uri, blob.GetType());
                 }

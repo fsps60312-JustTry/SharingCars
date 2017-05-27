@@ -13,7 +13,7 @@ namespace SharingCars.CarPage
         {
             InitializeViews();
             RegisterEvents();
-            DoConstructionActions();
+            DoInitializationTasksAsync();
         }
         private async Task UpdateViews()
         {
@@ -38,10 +38,10 @@ namespace SharingCars.CarPage
         private async Task DownloadDataAsync()
         {
             AImain.IsRunning = AImain.IsVisible = true;
-            await AppData.AppData.DownloadAsync(AppData.AppData.DataType.CarInfo);
+            await AppData.AppData.DownloadAsync(AppData.AppData.DataType.Car);
             AImain.IsRunning = AImain.IsVisible = false;
         }
-        private async void DoConstructionActions()
+        private async void DoInitializationTasksAsync()
         {
             await DownloadDataAsync();
             await UpdateViews();

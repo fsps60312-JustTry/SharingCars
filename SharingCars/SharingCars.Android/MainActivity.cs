@@ -85,7 +85,6 @@ namespace SharingCars.Droid
                 App.Current.MainPage.DisplayAlert("AppDomain.CurrentDomain.UnhandledException", $"{e}", "OK");
                 var error = new Exception("AppDomain.CurrentDomain.UnhandledException", e.ExceptionObject as Exception);
                 LogUnhandledException(error);
-                ErrorReporter.ReportError(error);
             };
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += delegate (object sender, System.Threading.Tasks.UnobservedTaskExceptionEventArgs e)
             {
@@ -94,7 +93,6 @@ namespace SharingCars.Droid
                 App.Current.MainPage.DisplayAlert("TaskScheduler.UnobservedTaskException", $"{e}", "OK");
                 var error = new Exception("TaskScheduler.UnobservedTaskException", e.Exception);
                 LogUnhandledException(error);
-                ErrorReporter.ReportError(error);
             };
             DisplayCrashReport();
         }

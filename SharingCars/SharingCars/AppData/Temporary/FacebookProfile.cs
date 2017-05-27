@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SharingCars.AppData
+namespace SharingCars.AppData.Temporary
 {
     class FacebookProfile
     {

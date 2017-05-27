@@ -142,10 +142,11 @@ namespace SharingCars.Droid
                 }
             }
             jsonBuilder.Append(
-                        $"\"{NotificationManager.Flags.Title}\":\"" + title + "\"," +
-                        $"\"{NotificationManager.Flags.Message}\":\"" + msg + "\"," +
-                        $"\"{NotificationManager.Flags.Type}\":\"" + type + "\"," +
-                        $"\"{NotificationManager.Flags.SenderId}\":\"" + AppData.AppDataConstants.DeviceId + "\"" +
+                        $"\"{NotificationManager.Flags.Title}\":\"{title}\"," +
+                        $"\"{NotificationManager.Flags.Message}\":\"{msg}\"," +
+                        $"\"{NotificationManager.Flags.Type}\":\"{type}\"," +
+                        $"\"{NotificationManager.Flags.DeviceId}\":\"{AppData.AppDataConstants.DeviceId}\"," +
+                        $"\"{NotificationManager.Flags.UserId}\":\"{AppData.AppData.user.Id}\"" +
                     "}" +
                 "}");
             String json = new String(jsonBuilder.ToString());

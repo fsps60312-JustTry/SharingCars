@@ -45,7 +45,7 @@ namespace SharingCars.CarPage
                 AppData.AppData.cars.RemoveAt(carIndex);
                 AppData.AppData.cars.Insert(carIndex, carInfo);
             }
-            await AppData.AppData.UploadAsync(AppData.AppData.DataType.CarInfo);
+            await AppData.AppData.UploadAsync(AppData.AppData.DataType.Car);
             return true;
         }
         public EditCarPage(int carIndex = -1)
@@ -65,12 +65,12 @@ namespace SharingCars.CarPage
             }
             else
             {
-                IMGcar.IsVisible = false;
+                IMGcar.IsEnabled = false;
                 AImain.IsRunning = AImain.IsVisible = true;
                 carPhoto = await AppData.PhotoInfo.New(file.GetStream());
                 await UpdateCarPhotoAsync();
                 AImain.IsRunning = AImain.IsVisible = false;
-                IMGcar.IsVisible = true;
+                IMGcar.IsEnabled = true;
             }
         }
         private async void LoadData() { await LoadDataAsync(); }

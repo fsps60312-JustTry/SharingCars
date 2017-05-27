@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Newtonsoft.Json;
 
 namespace SharingCars.Utils.Alerts
 {
     class ErrorAlert : AlertInfo
     {
-        public ErrorAlert(Exception error) : base("Error", error.ToString(), "OK")
+        public ErrorAlert(string message, Exception error) : base(message,$"Message: {error.Message}\r\n{JsonConvert.SerializeObject(error)}", "OK")
         {
-            ErrorReporter.ReportError(error);
+            ErrorReporter.ReportError(message, error);
         }
     }
     class DebugAlert : AlertInfo
